@@ -31,15 +31,15 @@ void display()
 {
     struct Registration *de;
     de = &d;
-    FILE * fp1;
-    fp1 = fopen("record-delear.txt","r");
+    FILE * fp;
+    fp = fopen("record-delear.txt","r");
     printf("Id\tName\tEmail\tpassword\tphone no\n");
-    while(fread(&d,sizeof(d),1,fp1))
+    while(fread(&d,sizeof(d),1,fp))
     {
         printf("%d\t%s\t%s\t\t%d\t%ld",de->d_id,de->d_name,de->d_email,de->d_pass,de->d_phone);
         printf("\n");
     }
-    fclose(fp1);
+    fclose(fp);
 }
 struct cab
 {
@@ -50,26 +50,26 @@ void Addcab()
 {
     struct cab *c;
     c = &cabs;
-   FILE * fp3;
-   fp3 = fopen("cab-record.txt","a");
+   FILE * fp;
+   fp = fopen("cab-record.txt","a");
                         
-                            printf("\n Enter Cab Id :");
-                            scanf("%d",&c->c_id);
-                            printf("\n Enter Cab Name :");
-                            scanf("%s",c->c_name);
-                            printf("\n Enter Cab Type :");
-                            scanf("%s",c->c_type);
-                            printf("\n Enter Cab Model :");
-                            scanf("%d",&c->c_model);
-                            printf("\n Enter A Pick Up Place :");
-                            scanf("%s",c->c_from);
-                            printf("\n Enter A Destination Place :");
-                            scanf("%s",c->c_to);
-                            printf("\n Enter The Service Ammount :");
-                            scanf("%d",&c->sm);
-                        printf("\n*****Cab Added Successfully*****\n");
-    fwrite(&cabs,sizeof(cabs),1,fp3);
-    fclose(fp3);
+        printf("\n Enter Cab Id :");
+        scanf("%d",&c->c_id);
+        printf("\n Enter Cab Name :");
+        scanf("%s",c->c_name);
+        printf("\n Enter Cab Type :");
+        scanf("%s",c->c_type);
+        printf("\n Enter Cab Model :");
+        scanf("%d",&c->c_model);
+        printf("\n Enter A Pick Up Place :");
+        scanf("%s",c->c_from);
+        printf("\n Enter A Destination Place :");
+        scanf("%s",c->c_to);
+        printf("\n Enter The Service Ammount :");
+        scanf("%d",&c->sm);
+        printf("\n*****Cab Added Successfully*****\n");
+    fwrite(&cabs,sizeof(cabs),1,fp);
+    fclose(fp);
 }
 int get_Num_of_Registration()
 {
@@ -87,40 +87,40 @@ void displayCab()
 {
     struct cab *c;
     c = &cabs;
-    FILE * fp4;
-    fp4 = fopen("cab-record.txt","r");
+    FILE * fp;
+    fp = fopen("cab-record.txt","r");
     printf("Id\tName\tType\tModel\tFrom\tTo\tAmmount\n");
-    while(fread(&cabs,sizeof(cabs),1,fp4))
+    while(fread(&cabs,sizeof(cabs),1,fp))
     {
         printf("%d\t%s\t%s\t%d\t%s\t%s\t%d",c->c_id,c->c_name,c->c_type,c->c_model,c->c_from,c->c_to,c->sm);
         printf("\n");
     }
-    fclose(fp4);
+    fclose(fp);
 }
 int availableCabId(int id)
 {
     struct cab *c;
     c = &cabs;
-    FILE * fp3;
-    fp3 = fopen("cab-record.txt","r");
-    while(!feof(fp3))
+    FILE * fp;
+    fp = fopen("cab-record.txt","r");
+    while(!feof(fp))
     {
-        fread(&cabs,sizeof(cabs),1,fp3);
+        fread(&cabs,sizeof(cabs),1,fp);
         if(id == c->c_id)
         {
-            fclose(fp3);
+            fclose(fp);
             return 1;
         }
     }
-    fclose(fp3);
+    fclose(fp);
     return 0;
 }
 void updateCab()
 {
     struct cab *c;
     c = &cabs;
-    FILE * fp5;
-    FILE * fp6;
+    FILE * fp;
+    FILE * fp1;
     int available,upid,s,ch=1,choice;
     printf("\n Enter The Id You Want To Update :");
     scanf("%d",&upid);
@@ -131,14 +131,14 @@ void updateCab()
     }
     else
     {
-        fp5 = fopen("cab-record.txt","r");
-        fp6 = fopen("update.txt","w");
-        while(fread(&cabs,sizeof(cabs),1,fp5))
+        fp = fopen("cab-record.txt","r");
+        fp1 = fopen("update.txt","w");
+        while(fread(&cabs,sizeof(cabs),1,fp))
         {
             s = c->c_id;
             if(s!=upid)
             {
-                fwrite(&cabs,sizeof(cabs),1,fp6);
+                fwrite(&cabs,sizeof(cabs),1,fp1);
             }
             else
             {
@@ -192,19 +192,19 @@ void updateCab()
                         printf("\n Please Enter Valid Choice.");
                     }
                 }
-                fwrite(&cabs,sizeof(cabs),1,fp6);
+                fwrite(&cabs,sizeof(cabs),1,fp1);
             }
         }
-        fclose(fp5);
-        fclose(fp6);
-        fp5 = fopen("cab-record.txt","w");
-        fp6 = fopen("update.txt","r");
-        while(fread(&cabs,sizeof(cabs),1,fp6))
+        fclose(fp);
+        fclose(fp1);
+        fp = fopen("cab-record.txt","w");
+        fp1 = fopen("update.txt","r");
+        while(fread(&cabs,sizeof(cabs),1,fp1))
         {
-            fwrite(&cabs,sizeof(cabs),1,fp5);
+            fwrite(&cabs,sizeof(cabs),1,fp);
         }
-        fclose(fp5);
-        fclose(fp6);
+        fclose(fp);
+        fclose(fp1);
         printf("\n Cab Record Updated Successfully.");
     }
 }
@@ -212,8 +212,8 @@ void deleteCab()
 {
     struct cab *c;
     c = &cabs;
-    FILE * fp5;
-    FILE * fp6;
+    FILE * fp;
+    FILE * fp1;
     int delete_id,s,available;
     printf("\n Enter The Id You Want To Delete :");
     scanf("%d",&delete_id);
@@ -224,26 +224,26 @@ void deleteCab()
     }
     else
     {
-        fp5 = fopen("cab-record.txt","r");
-        fp6 = fopen("update.txt","w");
-        while(fread(&cabs,sizeof(cabs),1,fp5))
+        fp = fopen("cab-record.txt","r");
+        fp1 = fopen("update.txt","w");
+        while(fread(&cabs,sizeof(cabs),1,fp))
         {
             s = c->c_id;
             if(s!=delete_id)
             {
-                fwrite(&cabs,sizeof(cabs),1,fp6);
+                fwrite(&cabs,sizeof(cabs),1,fp1);
             }
         }
-        fclose(fp5);
-        fclose(fp6);
-        fp5 = fopen("cab-record.txt","w");
-        fp6 = fopen("update.txt","r");
-        while(fread(&cabs,sizeof(cabs),1,fp6))
+        fclose(fp);
+        fclose(fp1);
+        fp = fopen("cab-record.txt","w");
+        fp1 = fopen("update.txt","r");
+        while(fread(&cabs,sizeof(cabs),1,fp1))
         {
-            fwrite(&cabs,sizeof(cabs),1,fp5);
+            fwrite(&cabs,sizeof(cabs),1,fp);
         }
-        fclose(fp5);
-        fclose(fp6);
+        fclose(fp);
+        fclose(fp1);
         printf("\n Cab Record Deleted Successfully.");
 
     }
@@ -252,15 +252,15 @@ void login()
 {
     struct Registration *de;
     de = &d;
-    FILE * fp2;
-    fp2 = fopen("record-delear.txt","r");
+    FILE * fp;
+    fp = fopen("record-delear.txt","r");
     char Lname[20];
     int Lpass,z,ch=1;
     printf("\n Enter Delear name :");
     scanf("%s",Lname);
     printf("\n Enter Delear password :");
     scanf("%d",&Lpass);
-    while(fread(&d,sizeof(d),1,fp2)){
+    while(fread(&d,sizeof(d),1,fp)){
     if(strcmp(Lname,de->d_name) == 0)
     {
         if(Lpass == de->d_pass)
@@ -306,7 +306,7 @@ void login()
     }
     
     }
-    fclose(fp2);
+    fclose(fp);
 }
 struct user_Registration
 {
@@ -318,8 +318,8 @@ void userReg()
 {
     struct user_Registration *u;
     u = &uReg;
-   FILE * fp7;
-   fp7 = fopen("user-record.txt","a");
+   FILE * fp;
+   fp = fopen("user-record.txt","a");
         printf("\n Enter User Id : ");
         scanf("%d",&u->uid);
         printf("\n Enter User Name : ");
@@ -330,48 +330,48 @@ void userReg()
         scanf("%s",u->uemail);
         printf("\n Enter User Phone Number : ");
         scanf("%ld",&u->uphone);
-    fwrite(&uReg,sizeof(uReg),1,fp7);
-    fclose(fp7);
+    fwrite(&uReg,sizeof(uReg),1,fp);
+    fclose(fp);
     printf("\n *****User Added Successfully*****\n");
 }
 void displayUser()
 {
     struct user_Registration *u;
     u = &uReg;
-    FILE * fp8;
-    fp8 = fopen("user-record.txt","r");
+    FILE * fp;
+    fp = fopen("user-record.txt","r");
     printf("Id\tName\tpassword\tEmail\tphone\n");
-    while(fread(&uReg,sizeof(uReg),1,fp8))
+    while(fread(&uReg,sizeof(uReg),1,fp))
     {
         printf("%d\t%s\t%d\t%s\t%ld",u->uid,u->uname,u->upass,u->uemail,u->uphone);
         printf("\n");
     }
-    fclose(fp8);
+    fclose(fp);
 }
 int availableUserId(int usid)
 {
     struct user_Registration *u;
     u = &uReg;
-    FILE * fp12;
-    fp12 = fopen("user-record.txt","r");
-    while(!feof(fp12))
+    FILE * fp;
+    fp = fopen("user-record.txt","r");
+    while(!feof(fp))
     {
-        fread(&uReg,sizeof(uReg),1,fp12);
+        fread(&uReg,sizeof(uReg),1,fp);
         if(usid == u->uid)
         {
-            fclose(fp12);
+            fclose(fp);
             return 1;
         }
     }
-    fclose(fp12);
+    fclose(fp);
     return 0;
 }
 void updateUser()
 {
     struct user_Registration *u;
     u = &uReg;
-    FILE * fp10;
-    FILE * fp11;
+    FILE * fp;
+    FILE * fp1;
     int available,User_id,s,ch=1,choice;
     printf("\n Enter The User Id You Want To Update :");
     scanf("%d",&User_id);
@@ -382,14 +382,14 @@ void updateUser()
     }
     else
     {
-        fp10 = fopen("user-record.txt","r");
-        fp11 = fopen("userUpdate.txt","w");
-        while(fread(&uReg,sizeof(uReg),1,fp10))
+        fp = fopen("user-record.txt","r");
+        fp1 = fopen("userUpdate.txt","w");
+        while(fread(&uReg,sizeof(uReg),1,fp))
         {
             s = u->uid;
             if(s!=User_id)
             {
-                fwrite(&uReg,sizeof(uReg),1,fp11);
+                fwrite(&uReg,sizeof(uReg),1,fp1);
             }
             else 
             {
@@ -408,7 +408,7 @@ void updateUser()
                     }
                     else if(choice == 1)
                     {
-                         printf("\n Enter User Name :");
+                        printf("\n Enter User Name :");
                         scanf("%s",u->uname);
                     }
                     else if(choice == 2)
@@ -432,19 +432,19 @@ void updateUser()
                         printf("\n Please Enter Valid Choice.");
                     }
                 }
-                fwrite(&uReg,sizeof(uReg),1,fp11);
+                fwrite(&uReg,sizeof(uReg),1,fp1);
             }
         }
-        fclose(fp10);
-        fclose(fp11);
-        fp10 = fopen("user-record.txt","w");
-        fp11 = fopen("userUpdate.txt","r");
-        while(fread(&uReg,sizeof(uReg),1,fp11))
+        fclose(fp);
+        fclose(fp1);
+        fp = fopen("user-record.txt","w");
+        fp1 = fopen("userUpdate.txt","r");
+        while(fread(&uReg,sizeof(uReg),1,fp1))
         {
-            fwrite(&uReg,sizeof(uReg),1,fp10);
+            fwrite(&uReg,sizeof(uReg),1,fp);
         }
-        fclose(fp10);
-        fclose(fp11);
+        fclose(fp);
+        fclose(fp1);
         printf("\n*****User Information Updated Successfully*****\n");
     }
 }
@@ -454,11 +454,11 @@ void sort()
     int size = get_Num_of_Registration();
     struct cab *p,temp;
     p = (struct cab *) calloc(size,sizeof(struct cab));
-    FILE * fp12;
-    fp12 = fopen("cab-record.txt","r");
+    FILE * fp;
+    fp = fopen("cab-record.txt","r");
     for(i=0;i<size;i++)
     {
-        fread(p+i,sizeof(cabs),1,fp12);
+        fread(p+i,sizeof(cabs),1,fp);
     }
     for(i=0;i<size;i++)
     {
@@ -477,21 +477,21 @@ void sort()
        printf("%d\t%s\t%s\t%d\t%s\t%s\t%d",(p+i)->c_id,(p+i)->c_name,(p+i)->c_type,(p+i)->c_model,(p+i)->c_from,(p+i)->c_to,(p+i)->sm);
         printf("\n");
     }
-    fclose(fp12);
+    fclose(fp);
 }
 void searchCabPrice()
 {
     struct cab *c;
     c = &cabs;
-    FILE *fp16;
+    FILE *fp;
     int lower,higher,m=0;
     printf("\n Enter Lower Lmit Of Price :");
     scanf("%d",&lower);
     printf("\n Enter Higher Lmit Of Price :");
     scanf("%d",&higher);
-    fp16 = fopen("cab-record.txt","r");
+    fp = fopen("cab-record.txt","r");
     printf("Id\tName\tType\tModel\tFrom\tTo\tAmmount\n");
-        while(fread(&cabs,sizeof(cabs),1,fp16))
+        while(fread(&cabs,sizeof(cabs),1,fp))
         {
             if(c->sm >= lower && c->sm <= higher)
             {
@@ -509,13 +509,13 @@ void searchCabPrice()
             printf("\n %d Record Found\n ",m);
         }
     
-    fclose(fp16);
+    fclose(fp);
 }
 void SearchcabId()
 {
     struct cab *c;
     c = &cabs;
-    FILE *fp17;
+    FILE *fp;
     int i,available,m;
     printf("\n Enter The Cab Id You Want To Search :");
     scanf("%d",&i);
@@ -526,9 +526,9 @@ void SearchcabId()
     }
     else
     {
-        fp17 = fopen("cab-record.txt","r");
+        fp = fopen("cab-record.txt","r");
         printf("Id\tName\tType\tModel\tFrom\tTo\tAmmount\n");
-        while(fread(&cabs,sizeof(cabs),1,fp17))
+        while(fread(&cabs,sizeof(cabs),1,fp))
         {
             m = c->c_id;
             if(m == i)
@@ -539,19 +539,19 @@ void SearchcabId()
         }
        
     }
-    fclose(fp17);
+    fclose(fp);
 }
 void searchCab()
 {
     struct cab *c;
     c = &cabs;
-    FILE * fp13;
+    FILE * fp;
     char name[20];
     int p=0;
     printf("\n Enter Cab Name You Want To Search :");
     scanf("%s",name);
-    fp13 = fopen("cab-record.txt","r");
-    while(fread(&cabs,sizeof(cabs),1,fp13))
+    fp = fopen("cab-record.txt","r");
+    while(fread(&cabs,sizeof(cabs),1,fp))
     {
         if(strcmp(name,c->c_name) == 0)
         {
@@ -569,23 +569,23 @@ void searchCab()
     {
         printf("\n %d Record Found\n ",p);
     }
-    fclose(fp13);
+    fclose(fp);
 }
 void userlogin()
 {
     struct user_Registration *u;
     u = &uReg;
-     struct cab *c;
+    struct cab *c;
     c = &cabs;
-    FILE * fp9;
-    fp9 = fopen("user-record.txt","r");
+    FILE * fp;
+    fp = fopen("user-record.txt","r");
     int Upass,z,ch=1;
     char Uname[20];
     printf("\n Enter User name :");
     scanf("%s",Uname);
     printf("\n Enter User password :");
     scanf("%d",&Upass);
-    while(fread(&uReg,sizeof(uReg),1,fp9))
+    while(fread(&uReg,sizeof(uReg),1,fp))
     {
         if(strcmp(Uname,u->uname) == 0)
         {
@@ -603,8 +603,8 @@ void userlogin()
                 scanf("%d",&z);
                 if(z == 0)
                 {
-                        printf("Thank You.For Visiting.");
-                        break;
+                    printf("Thank You.For Visiting.");
+                    break;
                 }
                 else if(z == 1)
                 {
@@ -661,19 +661,20 @@ void userlogin()
             }
         }
     }
+    fclose(fp);
 }
 int emptyfile()
 {
     struct Registration *de;
     de = &d;
     int k=0;
-    FILE * fp14;
-    fp14 = fopen("record-delear.txt","r");
-    while(fread(&d,sizeof(d),1,fp14))
+    FILE * fp;
+    fp = fopen("record-delear.txt","r");
+    while(fread(&d,sizeof(d),1,fp))
     {
         k=1;
     }
-    fclose(fp14);
+    fclose(fp);
     return k;
 }
 int emptyfile1()
@@ -681,13 +682,13 @@ int emptyfile1()
     struct user_Registration *u;
     u = &uReg;
     int x=0;
-    FILE * fp15;
-    fp15 = fopen("user-record.txt","r");
-    while(fread(&uReg,sizeof(uReg),1,fp15))
+    FILE * fp;
+    fp = fopen("user-record.txt","r");
+    while(fread(&uReg,sizeof(uReg),1,fp))
     {
         x=1;
     }
-    fclose(fp15);
+    fclose(fp);
     return x;
 }
 int main()
